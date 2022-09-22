@@ -1,15 +1,27 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+
+import {getUsers} from './request';
 
 function App() {
-	const [count, setCount] = useState(0);
+	const [users, setUsers] = useState([]);
+
+	useEffect(() => {
+		getUsers().then(res => {
+			setUsers(res.items);
+		})
+	}, []);
 
 	return (
 		<div>
-			<h1>Hello World</h1>
+			<h1>Users:</h1>
 
-			<button className="btn btn-primary" onClick={() => setCount(count + 1)}>Increment: {count}</button>
+			{users.map(user => (
+				<div key={user.id}>
+					{user.givenName} {user.familyName}
+				</div>
+			))}
 		</div>
-);
-	}
+	);
+}
 
 export default App;
